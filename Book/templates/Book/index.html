@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+<fieldset>
+<h1 style="font-size:100px">oiBook</h1>
+<p>欢迎来到oiBook，这里有着我们整理的各种算法和数据结构的教程！欢迎来这里学习。</p>
+
+<!-- <button onclick="colorset('darkred')">暗红色</button>
+<button onclick="colorset('black')">黑色</button>
+<button onclick="colorset('darkcyan')">深青色</button> -->
+</fieldset>
+{% if latest_page_list %}
+    {% for page in latest_page_list%}
+        <br>
+        <fieldset class="sub slow">
+            <h1>{{ page.page_title }}</h3>
+            <subp>{{ page.pub_date }}</subp>
+            <hr>
+            <a href="{% url 'Book:detail' page.id %}"><button >学习</button></a>
+            
+            {% if user.is_authenticated and page.exercise_set.all %}
+            <a href="{% url 'Book:exercise' page.id %}"><button >练习</button></a>
+            {% endif %}
+        <br>
+        </fieldset>
+    {% endfor %}
+{% else %}
+    <p>这里什么东西都没有~</p>
+{% endif %}
+
+{% endblock %}

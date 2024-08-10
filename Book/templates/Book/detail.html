@@ -1,0 +1,106 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+<!-- <style>
+    #MathJax_Message {
+        display: none!important;
+    }
+</style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        config: ["MMLorHTML.js"],
+        jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
+        extensions: ["MathMenu.js", "MathZoom.js"]
+    });
+</script> -->
+
+<!-- <fieldset class="none">
+    {% if user.is_authenticated %}
+        <h2 style="display: inline;">{{ user.username }}的oiBook</h2>
+        <a href="{% url 'Book:logout' %}" style="float:right; margin-left:10px"><button>登出</button></a>
+    {% else %}
+        <h2 style="display: inline;">oiBook</h2>
+        <a href="{% url 'Book:login' %}" style="float:right; margin-left:10px"><button>登录</button></a>
+        <a href="{% url 'Book:register' %}" style="float:right"><button>注册</button></a>
+    {% endif %}
+</fieldset> -->
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    showProcessingMessages: true, //关闭js加载过程信息
+    messageStyle: "none", //不显示信
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/Preview HTML"],
+    tex2jax: {
+        inlineMath:  [['$', '$']], //行内公式选择$
+        displayMath: [ ["$$","$$"] ], //段内公式选择$$
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'], //避开某些标签
+        ignoreClass:"comment-content" //避开含该Class的标
+    },
+    "HTML-CSS": {
+        availableFonts: ["STIX","TeX"], //可选字
+        showMathMenu: true //关闭右击菜单显示
+    }
+    });
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel="dns-prefetch" href="//cdn.mathjax.org" />
+
+<fieldset>
+    <h1>{{ page.page_title }}</h1>
+    <hr>
+    <subp>{{ page.pub_date }}</subp>
+</fieldset>
+
+<br>
+
+<fieldset class="slow">
+<p>
+    {{ content|safe }}
+</p>
+{% if user.is_authenticated and page.exercise_set.all %}
+    <a href="{% url 'Book:exercise' page.id %}"><button >练习</button></a>
+{% endif %}
+</fieldset>
+
+<br>
+
+{% if user.is_authenticated %}
+
+<form action="{% url 'Book:detail' page.id %}" method="post">
+    {% csrf_token %}
+
+    <fieldset class="slow">
+        <h2>评论</h2>
+        <p>发表你的评论：</p>
+
+        <textarea id="enter_comment" style="height: 200px; width: 600px; font-size:medium; font-family:华文细黑" type="text" name="enter_comment" placeholder="在这里输入..."></textarea>
+
+        <br>
+        <br>
+        <button type="submit">发布</button>
+
+        {% if error_message %} 
+            <p class="error">{{ error_message }}</p>
+        {% endif %}
+    </fieldset>
+
+</form>
+
+{% endif %}
+
+{% for comment in page.comment_set.all %}
+    <fieldset class="slow">
+        <h3 style="color:darkcyan">{{ comment.author_name }} :</h3>
+        <p>{{ comment.comment_text }}</p>
+        <br>
+        <subp>{{ comment.pub_date }}</subp>
+    </fieldset>
+    <br>
+{% endfor %}
+
+{% endblock %}

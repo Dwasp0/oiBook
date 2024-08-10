@@ -1,0 +1,33 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+<fieldset>
+    <h1>搜索结果</h1>
+</fieldset>
+
+<br>
+
+{% if result %}
+    {% for page in result %}
+    <br>
+    <fieldset class="sub slow">
+        <h1>{{ page.page_title }}</h3>
+        <subp>{{ page.pub_date }}</subp>
+        <hr>
+
+        <a href="{% url 'Book:detail' page.id %}"><button >学习</button></a>
+        
+        {% if user.is_authenticated and page.exercise_set.all %}
+        <a href="{% url 'Book:exercise' page.id %}"><button >练习</button></a>
+        {% endif %}
+    <br>
+    </fieldset>
+    {% endfor %}
+{% else %}
+    <fieldset>
+        <p>没有搜索到任何结果...</p>
+    </fieldset>
+{% endif %}
+
+{% endblock %}

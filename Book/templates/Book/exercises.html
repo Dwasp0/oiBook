@@ -1,0 +1,26 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+<fieldset>
+    <h1>练习题目</h1>
+</fieldset>
+
+<br>
+
+{% if page.exercise_set.all %}
+    {% for exercise in page.exercise_set.all %}
+    <fieldset class="slow">
+        <h3>{{ exercise.exercise_name }}</h3>
+        <hr>
+        <a href="{{ exercise.exercise_href }}"><button >开做</button></a>
+    </fieldset>
+    <br>
+    {% endfor %}
+{% else %}
+    <fieldset>
+        <p>这道题没有任何的练习，开心吗？</p>
+    </fieldset>
+{% endif %}
+
+{% endblock %}

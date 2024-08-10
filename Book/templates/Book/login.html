@@ -1,0 +1,31 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+<form action="{% url 'Book:login' %}" method="post">
+    {% csrf_token %}
+
+    <fieldset>
+        <h1>登录</h1>
+        <subp>欢迎回来！</subp><br><br>
+
+        <input id="username" style="font-size:medium; font-family:华文细黑" type="text" name="username" placeholder="用户名..." required pattern="[A-Z0-9a-z]+"><br>
+        <subp>用户名只能由英文大小写字母或数字组成。</subp><br>
+        <br>
+        <input id="password" style="font-size:medium; font-family:华文细黑" type="password" name="password" placeholder="密码..." required pattern="[A-Z0-9_a-z]+"><br>
+        <subp>密码只能由英文大小写字母、数字或“_”组成。</subp><br>
+        <br>
+        <subp>还没有账号呢？去<a href="{% url 'Book:register' %}">注册</a></subp>
+        <br>
+
+        <br>
+        <button type="submit">登录</button>
+
+        {% if error_message %} 
+            <p class="error">{{ error_message }}</p>
+        {% endif %}
+    </fieldset>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/code.css' %}">
+
+<script>
+    var htmle = document.querySelector('html');
+
+    // alert(document.cookie);
+
+    // function getCookie(cname) {
+    //     var name = cname + "=";
+    //     var ca = document.cookie.split(';');
+    //     for(var i=0; i<ca.length; i++)  {
+    //         var c = ca[i].trim();
+    //         if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+    //     }
+    //     return "";
+    // }
+
+    // function colorset(color) {
+    //   // Set the value of variable --blue to another value (in this case "lightblue")
+    //   document.cookie = "color="+color+";domain=127.0.0.1:8000";
+    //   htmle.style.setProperty('--maincolor', color);
+    //   htmle.style.setProperty('--lightmaincolor', LightenDarkenColor(color, 20));
+    // }
+
+    // colorset(getCookie("color"));
+</script>
+
+<fieldset class="none">
+    {% if user.is_authenticated %}
+        <h2 style="display: inline;">{{ user.username }}的oiBook</h2>
+        <a href="{% url 'Book:logout' %}" style="float:right; margin-left:10px"><button>登出</button></a>
+        <form action="{% url 'Book:search' %}" method="post" style="display: inline; float:right">
+            {% csrf_token %}
+            <input id="search_content" style="width: 350px; height:33px; font-size:medium; border-radius:15px 0px 0px 15px; padding-left:10px; font-family:华文细黑;" type="text" name="search_content" placeholder="在这里搜索..." required/>
+            <button type="submit" style="border-radius:0px 15px 15px 0px; margin-left:-3.5px;">搜索</button>
+        </form>
+    {% else %}
+        <h2 style="display: inline;">oiBook</h2>
+        <a href="{% url 'Book:login' %}" style="float:right; margin-left:10px"><button>登录</button></a>
+        <a href="{% url 'Book:register' %}" style="float:right; margin-left:10px"><button>注册</button></a>
+        <form action="{% url 'Book:search' %}" method="post" style="display: inline; float:right">
+            {% csrf_token %}
+            <input id="search_content" style="width: 350px; height:33px; font-size:medium; border-radius:15px 0px 0px 15px; padding-left:10px; font-family:华文细黑;" type="text" name="search_content" placeholder="在这里搜索..." required/>
+            <button type="submit" style="border-radius:0px 15px 15px 0px; margin-left:-3.5px;">搜索</button>
+        </form>
+    {% endif %}
+</fieldset>
+
+<br>
+
+{% block content %}
+{% endblock %}
